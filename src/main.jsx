@@ -1,14 +1,15 @@
 import { createRoot } from 'react-dom/client'
-import './app/index.css'
 import { Toaster } from 'react-hot-toast'
-import App from './app/App.jsx'
-
-import { store } from './app/app.store'
 import { Provider } from 'react-redux'
+
+import './app/index.css'
+import App from './app/App.jsx'
+import { store } from './app/app.store.js'
+
 
 createRoot(document.getElementById('root')).render(
     <Provider store={store}>
         <Toaster position="top-right" />
-          <App />
+            <App />
     </Provider>
 )

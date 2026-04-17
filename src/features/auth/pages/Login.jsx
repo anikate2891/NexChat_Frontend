@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { useAuth } from '../hook/useAuth.js'
-import { useSelector } from 'react-redux.js'
+import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router'
 
 const Login = () => {
