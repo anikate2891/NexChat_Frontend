@@ -42,7 +42,9 @@ const Login = () => {
         setPasswordError(result?.message || 'Login failed')
     }
 
-    if (!loading && user) {
+    if (loading) return <Loader />
+
+    if (user) {
         return <Navigate to="/" replace />
     }
 

@@ -75,6 +75,7 @@ export function useAuth() {
             console.error(err)
         } finally {
             dispatch(setUser(null))
+            dispatch(setLoading(false))
         }
     }
 
