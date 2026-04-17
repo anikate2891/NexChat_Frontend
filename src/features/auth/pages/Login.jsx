@@ -11,7 +11,7 @@ const Login = () => {
     const [passwordError, setPasswordError] = useState('')
 
     const user = useSelector(state => state.auth.user)
-    // const loading = useSelector(state => state.auth.loading)
+    const loading = useSelector(state => state.auth.loading)
 
     const { handleLogin } = useAuth()
     const navigate = useNavigate()
@@ -42,7 +42,7 @@ const Login = () => {
         setPasswordError(result?.message || 'Login failed')
     }
 
-    // if (loading) return <Loader />
+    if (loading) return <Loader />
 
     if (user) {
         return <Navigate to="/" replace />
