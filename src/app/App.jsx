@@ -1,6 +1,7 @@
 import { RouterProvider } from "react-router"
 import { router } from "./app.route.jsx"
 import { useAuth } from "../features/auth/hook/useAuth.js"
+import Loader from "../features/auth/components/Loader.jsx"
 import { useEffect } from "react"
 
 
@@ -12,9 +13,9 @@ function App() {
     auth.handleGetMe()
   }, [])
 
-  return (
-    <RouterProvider router={router} />
-  )
-}
+  if (auth.loading) return <Loader />
+return <RouterProvider router={router} />
+
+} 
 
 export default App

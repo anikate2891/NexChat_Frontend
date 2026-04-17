@@ -8,11 +8,15 @@ import { Navigate } from "react-router";
 export const router = createBrowserRouter([
     {
         path: "/login",
-        element: <Login />
+        element: <Protected>
+            <Login />
+        </Protected>
     },
     {
         path: "/register",
-        element: <Register />
+        element: <Protected>
+            <Register />
+        </Protected>
     },
     {
         path: "/",
