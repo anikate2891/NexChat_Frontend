@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { register, login, getMe, logout } from "../service/auth.api.js";
 import { setUser, setLoading, setError } from "../auth.slice.js";
 import toast from 'react-hot-toast'
@@ -6,7 +6,8 @@ import toast from 'react-hot-toast'
 
 export function useAuth() {
 
-
+    const user = useSelector(state => state.auth.user)
+    const loading = useSelector(state => state.auth.loading)
     const dispatch = useDispatch()
 
     async function handleRegister({ email, username, password }) {
@@ -78,6 +79,8 @@ export function useAuth() {
     }
 
     return {
+        user,
+        loading,
         handleRegister,
         handleLogin,
         handleGetMe,
