@@ -9,9 +9,11 @@ function App() {
 
   const auth = useAuth()
 
-  useEffect(() => {
+ useEffect(() => {
+  if (!auth.user) {
     auth.handleGetMe()
-  }, [])
+  }
+}, [])
 
   if (auth.loading) return <Loader />
   // console.log(auth);
