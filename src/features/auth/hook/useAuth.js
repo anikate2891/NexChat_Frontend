@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import { register, login, getMe, logout } from "../service/auth.api";
-import { setUser, setLoading, setError } from "../auth.slice";
+import { register, login, getMe, logout } from "../service/auth.api.js";
+import { setUser, setLoading, setError } from "../auth.slice.js";
 import toast from 'react-hot-toast'
 
 

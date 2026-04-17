@@ -1,6 +1,6 @@
 import { initializeSocketConnection } from "../service/chat.socket"
-import { sendMessage, getChats, getMessages, deleteChat } from "../service/chat.api";
-import { setChats, removeChat, setCurrentChatId,  setLoading, setError, createNewChat, addNewMessage, addMessages } from "../chat.slice";
+import { sendMessage, getChats, getMessages, deleteChat } from "../service/chat.api.js";
+import { setChats, removeChat, setCurrentChatId,  setLoading, setError, createNewChat, addNewMessage, addMessages } from "../chat.slice.js";
 import { useDispatch } from "react-redux";
 
 

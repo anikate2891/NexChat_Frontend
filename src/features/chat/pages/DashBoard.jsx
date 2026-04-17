@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { useDispatch, useSelector } from 'react-redux'
-import { useChat } from '../hooks/useChat'
+import { useChat } from '../hooks/useChat.js'
 import remarkGfm from 'remark-gfm'
-import { setCurrentChatId } from '../chat.slice'
-import { useAuth } from '../../auth/hook/useAuth'
+import { setCurrentChatId } from '../chat.slice.js'
+import { useAuth } from '../../auth/hook/useAuth.js'
 
 
 const Dashboard = () => {
