@@ -8,17 +8,13 @@ import { useEffect } from "react"
 function App() {
 
   const auth = useAuth()
-
- useEffect(() => {
-  if (!auth.user) {
+  useEffect(() => {
     auth.handleGetMe()
-  }
-}, [])
+  }, [])
 
   if (auth.loading) return <Loader />
-  // console.log(auth);
-  
-return <RouterProvider router={router} />
+
+  return <RouterProvider router={router} />
 
 } 
 
