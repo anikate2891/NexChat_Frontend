@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { useAuth } from '../hook/useAuth.js'
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router'
 
 const Login = () => {
@@ -10,8 +10,8 @@ const Login = () => {
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
 
-    const user = useSelector(state => state.auth.user)
-    const loading = useSelector(state => state.auth.loading)
+    // const user = useSelector(state => state.auth.user)
+    // const loading = useSelector(state => state.auth.loading)
 
     const { handleLogin } = useAuth()
     const navigate = useNavigate()
@@ -42,11 +42,11 @@ const Login = () => {
         setPasswordError(result?.message || 'Login failed')
     }
 
-    if (loading) return <Loader />
+    // if (loading) return <Loader />
 
-    if (user) {
-        return <Navigate to="/" replace />
-    }
+    // if (user) {
+    //     return <Navigate to="/" replace />
+    // }
 
     return (
         <>
