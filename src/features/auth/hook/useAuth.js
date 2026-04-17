@@ -25,10 +25,26 @@ export function useAuth() {
     async function handleLogin({ email, password }) {
         try {
             dispatch(setLoading(true))
+            dispatch(setError(null))
             const data = await login({ email, password })
             dispatch(setUser(data.user))
+            return { success: true }
         } catch (err) {
+            const backendError = err.response?.data?.err
+            let field = null
+
+            if (backendError === 'User not found') {
+                field = 'email'
+            } else if (backendError === 'Incorrect password') {
+                field = 'password'
+            }
+
             dispatch(setError(err.response?.data?.message || "Login failed"))
+            return {
+                success: false,
+                field,
+                message: err.response?.data?.message || 'Login failed',
+            }
         } finally {
             dispatch(setLoading(false))
         }

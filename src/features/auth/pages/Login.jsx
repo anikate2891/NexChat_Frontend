@@ -7,6 +7,8 @@ import { Navigate } from 'react-router'
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [emailError, setEmailError] = useState('')
+    const [passwordError, setPasswordError] = useState('')
 
     const user = useSelector(state => state.auth.user)
     const loading = useSelector(state => state.auth.loading)
@@ -16,9 +18,28 @@ const Login = () => {
 
     const submitForm = async (event) => {
         event.preventDefault()
+        setEmailError('')
+        setPasswordError('')
+
         const payload = { email, password }
-        await handleLogin(payload)
-        navigate("/")
+        const result = await handleLogin(payload)
+
+        if (result?.success) {
+            navigate("/")
+            return
+        }
+
+        if (result?.field === 'email') {
+            setEmailError('Please check the email and try again')
+            return
+        }
+
+        if (result?.field === 'password') {
+            setPasswordError('Please check the password and try again')
+            return
+        }
+
+        setPasswordError(result?.message || 'Login failed')
     }
 
     if (!loading && user) {
@@ -103,12 +124,20 @@ const Login = () => {
                                         id="email"
                                         type="email"
                                         value={email}
-                                        onChange={(event) => setEmail(event.target.value)}
+                                        onChange={(event) => {
+                                            setEmail(event.target.value)
+                                            if (emailError) {
+                                                setEmailError('')
+                                            }
+                                        }}
                                         placeholder="you@example.com"
                                         required
                                         className="w-full bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.1)] rounded-[10px] py-3 pl-[42px] pr-[14px] text-[#f0fafb] font-[DM_Sans,sans-serif] text-[0.93rem] outline-none transition-all duration-200 placeholder:text-[rgba(240,250,251,0.22)] focus:border-[#31b8c6] focus:bg-[rgba(49,184,198,0.06)] focus:shadow-[0_0_0_3px_rgba(49,184,198,0.15)]"
                                     />
                                 </div>
+                                {emailError && (
+                                    <p className="text-[0.8rem] text-[#ff7b7b]">{emailError}</p>
+                                )}
                             </div>
 
                             {/* Password — login-field */}
@@ -131,12 +160,20 @@ const Login = () => {
                                         id="password"
                                         type="password"
                                         value={password}
-                                        onChange={(event) => setPassword(event.target.value)}
+                                        onChange={(event) => {
+                                            setPassword(event.target.value)
+                                            if (passwordError) {
+                                                setPasswordError('')
+                                            }
+                                        }}
                                         placeholder="Enter your password"
                                         required
                                         className="w-full bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.1)] rounded-[10px] py-3 pl-[42px] pr-[14px] text-[#f0fafb] font-[DM_Sans,sans-serif] text-[0.93rem] outline-none transition-all duration-200 placeholder:text-[rgba(240,250,251,0.22)] focus:border-[#31b8c6] focus:bg-[rgba(49,184,198,0.06)] focus:shadow-[0_0_0_3px_rgba(49,184,198,0.15)]"
                                     />
                                 </div>
+                                {passwordError && (
+                                    <p className="text-[0.8rem] text-[#ff7b7b]">{passwordError}</p>
+                                )}
                             </div>
 
                             {/* login-divider */}

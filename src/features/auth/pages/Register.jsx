@@ -6,11 +6,19 @@ const Register = () => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [passwordError, setPasswordError] = useState('')
 
   const { handleRegister } = useAuth()
 
   const submitForm = async (event) => {
     event.preventDefault()
+
+    if (password.length < 6) {
+      setPasswordError('Password must be at least 6 characters')
+      return
+    }
+
+    setPasswordError('')
     await handleRegister({ username, email, password })
   }
 
@@ -213,12 +221,24 @@ const Register = () => {
                     id="password"
                     type="password"
                     value={password}
-                    onChange={(event) => setPassword(event.target.value)}
+                    onChange={(event) => {
+                      const nextPassword = event.target.value
+                      setPassword(nextPassword)
+                      if (nextPassword.length > 0 && nextPassword.length < 6) {
+                        setPasswordError('Password must be at least 6 characters')
+                      } else {
+                        setPasswordError('')
+                      }
+                    }}
                     placeholder="Create a password"
                     required
+                    minLength={6}
                     className="w-full bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.1)] rounded-[10px] py-3 pl-[42px] pr-[14px] text-[#f0fafb] font-[DM_Sans,sans-serif] text-[0.93rem] outline-none transition-all duration-200 placeholder:text-[rgba(240,250,251,0.22)] focus:border-[#31b8c6] focus:bg-[rgba(49,184,198,0.06)] focus:shadow-[0_0_0_3px_rgba(49,184,198,0.15)]"
                   />
                 </div>
+                {passwordError && (
+                  <p className="text-[0.8rem] text-[#ff7b7b]">{passwordError}</p>
+                )}
               </div>
 
               {/* reg-divider */}
