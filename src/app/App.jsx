@@ -14,6 +14,8 @@ function App() {
   }, [])
 
   if (auth.loading) return <Loader />
+  console.log(auth);
+  
 return <RouterProvider router={router} />
 
 } 
