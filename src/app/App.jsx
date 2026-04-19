@@ -6,16 +6,16 @@ import { useEffect } from "react"
 
 
 function App() {
-
   const auth = useAuth()
+  
   useEffect(() => {
     auth.handleGetMe()
   }, [])
 
-  if (auth.loading) return <Loader />
-
-  return <RouterProvider router={router} />
-
-} 
-
+  return (
+    <>
+      <RouterProvider router={router} />  {/* ← Hamesha render karo */}
+    </>
+  )
+}
 export default App
