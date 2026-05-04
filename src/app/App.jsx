@@ -7,10 +7,12 @@ import { useEffect } from "react"
 
 function App() {
   const auth = useAuth()
-  
+
   useEffect(() => {
     auth.handleGetMe()
   }, [])
+  
+  if (auth.loading) return <Loader />
 
   return (
     <>

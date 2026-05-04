@@ -7,8 +7,10 @@ import { Navigate } from 'react-router'
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     // const user = useSelector(state => state.auth.user)
     // const loading = useSelector(state => state.auth.loading)
@@ -17,31 +19,26 @@ const Login = () => {
     const navigate = useNavigate()
 
     const submitForm = async (event) => {
-        event.preventDefault()
-        setEmailError('')
-        setPasswordError('')
+    event.preventDefault()
+    setEmailError('')
+    setPasswordError('')
+    setIsLoading(true)          // ← ADD
 
-        const payload = { email, password }
-        const result = await handleLogin(payload)
+    const payload = { email, password }
+    const result = await handleLogin(payload)
 
-        if (result?.success) {
-            navigate("/")
-            return
-        }
+    setIsLoading(false)         // ← ADD
 
-        if (result?.field === 'email') {
-            setEmailError('Please check the email and try again')
-            return
-        }
-
-        if (result?.field === 'password') {
-            setPasswordError('Please check the password and try again')
-            return
-        }
-
-        setPasswordError(result?.message || 'Login failed')
+    if (result?.success) {
+        navigate("/")
+        return
     }
 
+    if (result?.field === 'email') return setEmailError(result.message)
+    if (result?.field === 'password') return setPasswordError(result.message)
+
+    setPasswordError(result?.message || 'Login failed')
+}
     // if (loading) return <Loader />
 
     // if (user) {
@@ -117,8 +114,8 @@ const Login = () => {
                                     {/* login-input-icon */}
                                     <span className="absolute left-[14px] text-[rgba(49,184,198,0.5)] pointer-events-none flex">
                                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <rect width="20" height="16" x="2" y="4" rx="2"/>
-                                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                                            <rect width="20" height="16" x="2" y="4" rx="2" />
+                                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                                         </svg>
                                     </span>
                                     {/* login-input */}
@@ -153,14 +150,14 @@ const Login = () => {
                                     {/* login-input-icon */}
                                     <span className="absolute left-[14px] text-[rgba(49,184,198,0.5)] pointer-events-none flex">
                                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
-                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                                         </svg>
                                     </span>
                                     {/* login-input */}
                                     <input
                                         id="password"
-                                        type="password"
+                                        type={showPassword ? "text" : "password"}
                                         value={password}
                                         onChange={(event) => {
                                             setPassword(event.target.value)
@@ -170,8 +167,27 @@ const Login = () => {
                                         }}
                                         placeholder="Enter your password"
                                         required
-                                        className="w-full bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.1)] rounded-[10px] py-3 pl-[42px] pr-[14px] text-[#f0fafb] font-[DM_Sans,sans-serif] text-[0.93rem] outline-none transition-all duration-200 placeholder:text-[rgba(240,250,251,0.22)] focus:border-[#31b8c6] focus:bg-[rgba(49,184,198,0.06)] focus:shadow-[0_0_0_3px_rgba(49,184,198,0.15)]"
+                                        className="w-full bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.1)] rounded-[10px] py-3 pl-[42px] pr-[42px] text-[#f0fafb] font-[DM_Sans,sans-serif] text-[0.93rem] outline-none transition-all duration-200 placeholder:text-[rgba(240,250,251,0.22)] focus:border-[#31b8c6] focus:bg-[rgba(49,184,198,0.06)] focus:shadow-[0_0_0_3px_rgba(49,184,198,0.15)]"
                                     />
+                                    {/* show-hide-password-btn */}
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-[14px] text-[rgba(240,250,251,0.4)] hover:text-[#31b8c6] transition-colors duration-200 flex items-center justify-center"
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                    >
+                                        {showPassword ? (
+                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                                            </svg>
+                                        ) : (
+                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                            </svg>
+                                        )}
+                                    </button>
                                 </div>
                                 {passwordError && (
                                     <p className="text-[0.8rem] text-[#ff7b7b]">{passwordError}</p>
@@ -184,9 +200,10 @@ const Login = () => {
                             {/* login-btn  — group used for arrow hover */}
                             <button
                                 type="submit"
+                                disabled={isLoading}
                                 className="group relative w-full border-none rounded-[10px] py-[13px] px-6 font-[Syne,sans-serif] text-[0.95rem] font-bold tracking-[0.02em] text-[#0a0a0f] bg-[#31b8c6] cursor-pointer overflow-hidden transition-all duration-200 mt-[0.4rem] hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(49,184,198,0.35)] active:translate-y-0 before:content-[''] before:absolute before:inset-0 before:bg-gradient-to-br before:from-[rgba(255,255,255,0.18)] before:to-transparent before:pointer-events-none"
                             >
-                                Sign In{' '}
+                                {isLoading ? 'Signing in...' : 'Sign In'}
                                 {/* login-btn-arrow */}
                                 <span className="inline-block ml-1.5 transition-transform duration-200 group-hover:translate-x-1">→</span>
                             </button>
@@ -225,8 +242,8 @@ const Login = () => {
                         {/* login-brand-icon */}
                         <div className="w-9 h-9 rounded-lg bg-[#31b8c6] flex items-center justify-center">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M10 2L17 6V14L10 18L3 14V6L10 2Z" stroke="#0a0a0f" strokeWidth="2" strokeLinejoin="round"/>
-                                <circle cx="10" cy="10" r="2.5" fill="#0a0a0f"/>
+                                <path d="M10 2L17 6V14L10 18L3 14V6L10 2Z" stroke="#0a0a0f" strokeWidth="2" strokeLinejoin="round" />
+                                <circle cx="10" cy="10" r="2.5" fill="#0a0a0f" />
                             </svg>
                         </div>
                         {/* login-brand-name */}
